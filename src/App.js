@@ -5,7 +5,7 @@ import { Route, Link, Switch } from 'react-router-dom';
 import axios from 'axios';
 
 import Home from './components/Home';
-import PizzaForm from './components/PizzaForm';
+import Pizza from './components/Pizza';
 // import * as yup from 'yup'
 
 //INITIAL STATES
@@ -91,13 +91,13 @@ return (
       <h1 className='store-header'>BloomTech Eats</h1>
       <div className='nav-links'>
         <Link to='/'>Home</Link>
-        <Link to='/PizzaForm'>Order Pizza</Link>
+        <Link to='/Pizza'>Order Pizza</Link>
       </div>
     </nav>
 
 <Switch>
-  <Route path='/PizzaForm' component={PizzaForm}>
-    <PizzaForm />
+  <Route path='/Pizza'>
+    <Pizza />
   </Route>
 
   <Route path='/'>

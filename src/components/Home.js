@@ -7,9 +7,7 @@ return (
 
     <div>
         <h1>Home</h1>
-        <button
-            onClick={}
-            
+        <button id="order-pizza"></button>
     </div>
 )
 
