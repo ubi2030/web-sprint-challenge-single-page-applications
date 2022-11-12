@@ -1,30 +1,112 @@
-import React, { useState } from "react";
-import { render } from 'react-dom';
+import React, { useState, useEffect } from "react";
 import schema from "./validation/formSchema";
+import './App.css';
+import { Route, Link, Switch } from 'react-router-dom';
+import axios from 'axios';
 
-const pizzaOrder = [
-  { pizzaName: 'Plain', pizzaSize: 'Medium', pizzaTopping1: true, pizzaTopping2: true, pizzaSpecial: ''},
-  { pizzaName: 'Hawaiian', pizzaSize: 'Large', pizzaTopping1: true, pizzaTopping2: false, pizzaSpecial: ''},
-]
+import Home from './components/Home';
+import PizzaForm from './components/PizzaForm';
+// import * as yup from 'yup'
 
-// id='order-pizza'
+//INITIAL STATES
+const initialFormValues = {
+  name: '',
+  size: '',
+  topping1: false,
+  topping2: false,
+  special: ''
+}
 
-// function Form() {
-//   const [pizza, setPizza] = useState(pizzaOrder);
-//   const [formValues, setFormValues] = useState({ pizzaName: "", pizzaSize: "", pizzaTopping1: false, pizzaTopping2: false, pizzaSpecial: ""});
+const initialFormErrors = {
+  name: '',
+  size: '',
+  special: '',
+}
 
-//   const change = (evt) => {
-//     const { name, value } = evt.target;
-//     setFormValues({ ...formValues, [name]: value})
+const initialPizza = []
+const initialDisabled = true
 
+export default function App(props) {
+
+//STATES
+  const [pizza, setPizza] = useState(initialPizza);
+  const [formValues, setFormValues] = useState(initialFormValues);
+  const [formErrors, setFormErrors] = useState(initialFormErrors);
+  const [disabled, setDisabled] = useState(initialDisabled);
+
+//HELPER
+const postNewPizza = newPizza => {
+  axios.post('https://reqres.in/api/orders', newPizza)
+  .then(res => {
+    setPizza([res.data, ...pizza])
+    setFormValues(initialFormValues)
+  })
+  .catch(err => {
+    console.error(err)
+})
+}
+
+// const validate = (name, value) => {
+//   yup.reach(schema, name)
+//   .validate(value)
+//   .then(()=> setformErrors({...formErrors, [name]: ''}))
+//   .catch(err=> setformErrors({...formErrors, [name]: err.errors[0]}))
+// }
+
+//EVENT HANDLERS
+
+
+// const inputChange = (name,value) => {
+//   validate(name, value);
+//   setFormValues({
+//     ...formValues, 
+//     [name]: value
+//     });
 //   }
 
-//   const submit = (evt) => {
-//     evt.preventDefault();
-//     setPizza(pizza.concat({ pizzaName = formValues.pizzaName, pizzaSize= formValues.pizzaSize, pizzaTopping1 = formValues.pizzaTopping1, pizzaTopping2 = formValues.pizzaTopping2, pizzaSpecial = formValues.pizzaSpecial}))
-//     setFormValues({ pizzaName = "", pizzaSize = "", pizzaTopping1 = false, pizzaTopping2 = false, pizzaSpecial = ""})
-//   }
+const formSubmit = () => {
+  const newPizza = {
+    name: formValues.name.trim(),
+    size: formValues.size.trim(),
+    special: formValues.special.trim(),
+    topping1: ['onions', 'olives', 'ham'].filter(top => !!formValues[top])
+  }
 
+  postNewPizza(newPizza)
+}
+
+//SIDE EFFECTS
+
+// useEffect(() => {
+//   getPizza()
+// }, [])
+
+// useEffect(() => {
+//   schema.isValid(formValues).then(valid=> setDisabled(!valid))
+// }, [formValues])
+
+return (
+  <div className='App'>
+    <nav>
+      <h1 className='store-header'>BloomTech Eats</h1>
+      <div className='nav-links'>
+        <Link to='/'>Home</Link>
+        <Link to='/PizzaForm'>Order Pizza</Link>
+      </div>
+    </nav>
+
+<Switch>
+  <Route path='/PizzaForm' component={PizzaForm}>
+    <PizzaForm />
+  </Route>
+
+  <Route path='/'>
+    <Home />
+  </Route>
+
+</Switch>
+</div>)
+}
 //   return (
 // <div id="pizza-order" className="container">
 //   <h1>Pizza Order Form</h1>
@@ -35,49 +117,31 @@ const pizzaOrder = [
 //         </div>
 //     )
 //   }}
-//   <form id="pizza-form">
-//     <input
-//       name="pizzaName"
-//       type="text"
-//       value={formValues.pizzaName}
-//       onChange={change}
-//       />
-//     <input
-//       name="pizzaSize"
-//       type="text"
-//       value={formValues.pizzaSize}
-//       onChange={change}
-//       />
-//     <input
-//       name="pizzaTopping1"
-//       type= bool
-//       value={formValues.pizzaTopping1}
-//       onChange={change}
-//       />
-//     <input
-//       name="pizzaTopping2"
-//       type= bool
-//       value={formValues.pizzaTopping2}
-//       onChange={change}
-//       />
-//       <input
-//       name="pizzaSpecial"
-//       type-="text"
-//       value={formValues.pizzaSpecial}
-//       onChange={change}
-//       />
-//     </form>
-//     <input type="submit" value="Submit Pizza Order!"/>
-// </div>
-//   )
-// }
 
-const App = () => {
-  return (
-    <>
-      <h1>Lambda Eats</h1>
-      <p>You can remove this code and create your own header</p>
-    </>
-  );
-};
-export default App;
+
+
+//   return (
+//     <div>
+//       <Route path="/">
+//         <Form pizzas={pizzaOrder}/>
+//       </Route>
+//     </div>
+//     <div className="App"></div>
+//     <PizzaForm
+//       values={formValues}
+//       change={handleChange}
+//       errors={formErrors}
+//       submit={handleSubmit}
+//       />
+//       {pizzaOrder.map(pizza => (
+//         <div key={user.id}>
+//           <p>{pizza.createdAt}</p>
+//           <p>{pizza.name</p>
+//         </div>
+//       ))}
+//       </div>
+//       <h1>Lambda Eats</h1>
+//       <p>Pizza Order Form</p>
+//     </>
+//   );
+// };
