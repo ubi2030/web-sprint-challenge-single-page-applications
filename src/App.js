@@ -6,7 +6,7 @@ import axios from 'axios';
 
 import Home from './components/Home';
 import Pizza from './components/Pizza';
-// import * as yup from 'yup'
+import * as yup from "yup";
 
 //INITIAL STATES
 const initialFormValues = {
@@ -64,16 +64,16 @@ const postNewPizza = newPizza => {
 //     });
 //   }
 
-const formSubmit = () => {
-  const newPizza = {
-    name: formValues.name.trim(),
-    size: formValues.size.trim(),
-    special: formValues.special.trim(),
-    topping1: ['onions', 'olives', 'ham'].filter(top => !!formValues[top])
-  }
+// const formSubmit = () => {
+//   const newPizza = {
+//     name: formValues.name.trim(),
+//     size: formValues.size.trim(),
+//     special: formValues.special.trim(),
+//     topping1: ['onions', 'olives', 'ham'].filter(top => !!formValues[top])
+//   }
 
-  postNewPizza(newPizza)
-}
+//   postNewPizza(newPizza)
+// }
 
 //SIDE EFFECTS
 
