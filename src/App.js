@@ -5,53 +5,29 @@ import { Route, Link, Switch } from 'react-router-dom';
 import axios from 'axios';
 
 import Home from './components/Home';
-import Pizza from './components/Pizza';
+import Pizza from './components/pizza';
 import * as yup from "yup";
 
 //INITIAL STATES
-const initialFormValues = {
-  name: '',
-  size: '',
-  topping1: false,
-  topping2: false,
-  special: ''
-}
 
-const initialFormErrors = {
-  name: '',
-  size: '',
-  special: '',
-}
-
-const initialPizza = []
-const initialDisabled = true
 
 export default function App(props) {
 
 //STATES
-  const [pizza, setPizza] = useState(initialPizza);
-  const [formValues, setFormValues] = useState(initialFormValues);
-  const [formErrors, setFormErrors] = useState(initialFormErrors);
-  const [disabled, setDisabled] = useState(initialDisabled);
 
 //HELPER
-const postNewPizza = newPizza => {
-  axios.post('https://reqres.in/api/orders', newPizza)
-  .then(res => {
-    setPizza([res.data, ...pizza])
-    setFormValues(initialFormValues)
-  })
-  .catch(err => {
-    console.error(err)
-})
-}
-
-// const validate = (name, value) => {
-//   yup.reach(schema, name)
-//   .validate(value)
-//   .then(()=> setformErrors({...formErrors, [name]: ''}))
-//   .catch(err=> setformErrors({...formErrors, [name]: err.errors[0]}))
+// const postNewPizza = newPizza => {
+//   axios.post('https://reqres.in/api/orders', newPizza)
+//   .then(res => {
+//     setPizza([res.data, ...pizza])
+//     setFormValues(initialFormValues)
+//   })
+//   .catch(err => {
+//     console.error(err)
+// })
 // }
+
+
 
 //EVENT HANDLERS
 

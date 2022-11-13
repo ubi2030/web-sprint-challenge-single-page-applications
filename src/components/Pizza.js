@@ -1,123 +1,117 @@
-import React from 'react';
+import React, { useState, useEffect }  from 'react';
+import * as yup from "yup";
+import axios from 'axios';
+
+const formSchema = yup.object().shape({
+    name: yup
+    .string()
+    .min(2, "name must be at least 2 characters"),
+    size: yup
+    .string(),
+    special: yup
+    .string(),
+    olives: yup
+    .string(),
+    onions: yup
+    .string(),
+    ham: yup
+    .string(),
+    cheese: yup
+    .string()
+})
+
+const initialFormValues = {
+    name: '',
+    size: '',
+    olives: false,
+    onions: true,
+    ham: true,
+    cheese: false,
+    special: ''
+  }
+  
+  const initialFormErrors = {
+    name: '',
+    size: '',
+    special: '',
+  }
+  
+  const initialPizza = []
+  const initialDisabled = true
 
 export default function Pizza(){
 
+    const [pizza, setPizza] = useState(initialPizza);
+    const [formValues, setFormValues] = useState(initialFormValues);
+    const [formErrors, setFormErrors] = useState(initialFormErrors);
+    const [disabled, setDisabled] = useState(initialDisabled);
+
+    const onChange = evt => {
+        const { name, value, checked, type} = evt.target;
+        setFormValues({...formValues ,
+            [name]: type === 'checkbox' ? checked : value})
+        validate(evt);
+        console.log(formValues);
+        }
+
+    const validate = evt => {
+         yup.reach(formSchema, evt.target.name)
+          .validate(evt.target.value)
+          .then(()=> setFormErrors({...formErrors, [evt.target.name]: ''}))
+          .catch(err=> setFormErrors({...formErrors, [evt.target.name]: err.errors[0]}))
+}
+
+    const formSubmit = (e) => {
+      e.preventDefault();
+     axios.post('https://reqres.in/api/orders', pizza)
+         .then(res => {
+         console.log("Pizza Order Submitted!")
+    })
+         .catch(err => {
+        console.error(err)
+  })
+    }
 return (
 
     <div>
-        <h1>Home</h1>
-        <form id="pizza-form"></form>
-        <input id="name-input"
-           name="text" />
-        <select id="size-dropdown">
+        <h1>Order Pizza!</h1>
+        <form id="pizza-form" onSubmit={formSubmit}>
+        <label>Name:
+       <input id="name-input" 
+           name="name"
+           type="text"
+           value={formValues.name}
+           onChange={onChange}/>
+        </label>
+        <label>Size:
+        <select id="size-dropdown"
+            name="size"
+            value={formValues.size}
+            onChange={onChange}>
             <option value =''>-- Select an option</option>
             <option value ='Small'>Small</option>
             <option value ='Medium'>Medium</option>
             <option value ='Large'>Large</option>
         </select>
+        </label>
+        <label>Special:
         <input id="special-text"
-           name="text" />
+           name="special"
+           value={formValues.special}
+           onChange={onChange} />
+        </label>
         <h2>Toppings</h2>
-        <input type="checkbox" value="olives" />
-        <input type="checkbox" value="onions" />
-        <input type="checkbox" value="ham" />
-        <input type="checkbox" value="cheese" />
+        <label>Toppings:
+        <input type="checkbox" value={formValues.olives} name="olives" onChange={onChange}/>
+        <input type="checkbox" value={formValues.onions} name="onions" onChange={onChange}/>
+        <input type="checkbox" value={formValues.ham} name="ham" onChange={onChange}/>
+        <input type="checkbox" value={formValues.cheese} name="cheese"onChange={onChange}/>
+        </label>
+        <label>Submit:
+        <button type="submit" value="Submit Pizza Order!" onChange={onChange}></button> 
+        </label>
+        </form>
     </div>
 )
 
 }
-
-
-
-
-// import React from 'react';
-// import { Link, useRouteMatch } from 'react-router-dom';
-
-// export default function PizzaForm (props) {
-//     const { change, submit } = props;
-//     const { pizzaName, size, toppping1, topping2, special } = props.values;
-
-//     const onChange = (e) => {
-//         const { name, value, checked, type } = e.target;
-//         const newVal = type === 'checkbox' ? checked : value;
-//         change(name, newVal);
-//     }
-
-//     const onSubmit = (e) => {
-//         e.preventDefault();
-//         submit();
-//     }
-
-//     return (
-//         <div>
-//             <h1> Pizza Order Form!</h1>
-//             <form id="pizza-form" onSubbmit ={onSubmit}>
-//                 <label>Name:
-//                     <input
-//                         name="pizzaName"
-//                         value={pizzaName}
-//                         onChange={onChange}
-//                         />
-//                 </label>
-//             </form>
-//         </div>
-    
-//     )
-// }
-
-
-
-
-// <label> pizzaTopping1
-
-// </label>
-
-
-
-// <option value =''>-- Select an option</option>
-// <option value ='olives'>Olives</option>
-// <option value ='onions'>Onions</option>
-// <option value ='ham'>Ham</option>
-
-
-// id='order-pizza'
-
-
-//   <form id="pizza-form">
-//     <input
-//       name="pizzaName"
-//       type="text"
-//       value={formValues.pizzaName}
-//       onChange={change}
-//       />
-//     <input
-//       name="pizzaSize"
-//       type="text"
-//       value={formValues.pizzaSize}
-//       onChange={change}
-//       />
-//     <input
-//       name="pizzaTopping1"
-//       type= bool
-//       value={formValues.pizzaTopping1}
-//       onChange={change}
-//       />
-//     <input
-//       name="pizzaTopping2"
-//       type= bool
-//       value={formValues.pizzaTopping2}
-//       onChange={change}
-//       />
-//       <input
-//       name="pizzaSpecial"
-//       type-="text"
-//       value={formValues.pizzaSpecial}
-//       onChange={change}
-//       />
-//     </form>
-//     <input type="submit" value="Submit Pizza Order!"/>
-// </div>
-//   )
-// }
-
-// export default PizzaForm;

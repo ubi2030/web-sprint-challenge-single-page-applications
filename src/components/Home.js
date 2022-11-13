@@ -12,7 +12,7 @@ return (
 
     <div>
         <img 
-        src='pizza.jpg'/>
+        src="Pizza.jpg" alt="pizza"/>
         <h1>Home</h1>
         <button id="order-pizza"
             onClick={routeToOrder}>
