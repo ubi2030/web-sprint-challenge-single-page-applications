@@ -5,7 +5,7 @@ import axios from 'axios';
 const formSchema = yup.object().shape({
     name: yup
     .string()
-    .min(2, "name must be at least 2 characters"),
+    .min(2, 'name must be at least 2 characters'),
     size: yup
     .string(),
     special: yup
@@ -75,8 +75,9 @@ return (
 
     <div>
         <h1>Order Pizza!</h1>
-        <form id="pizza-form" >
+        <form id="pizza-form" errors={formErrors} >
         <label>Name:
+            <p>{formErrors.name}</p>
        <input id="name-input" 
            name="name"
            type="text"
