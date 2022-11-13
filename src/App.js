@@ -3,7 +3,7 @@ import './App.css';
 import { Route, Link, Switch } from 'react-router-dom';
 
 import Home from './components/Home';
-import Pizza from './components/pizza';
+import Pizza from './pizza';
 
 export default function App() {
 
