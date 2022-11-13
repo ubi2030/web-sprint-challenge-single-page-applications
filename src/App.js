@@ -13,12 +13,12 @@ return (
       <h1 className='store-header'>BloomTech Eats</h1>
       <div className='nav-links'>
         <Link to='/'>Home</Link>
-        <Link to='/Pizza'>Order Pizza</Link>
+        <Link to='/pizza'>Order Pizza</Link>
       </div>
     </nav>
 
 <Switch>
-  <Route path='/Pizza'>
+  <Route path='/pizza'>
     <Pizza />
   </Route>
 
