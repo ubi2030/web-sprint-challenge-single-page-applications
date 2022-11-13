@@ -75,7 +75,7 @@ return (
 
     <div>
         <h1>Order Pizza!</h1>
-        <form id="pizza-form" onSubmit={formSubmit}>
+        <form id="pizza-form" >
         <label>Name:
        <input id="name-input" 
            name="name"
@@ -108,7 +108,7 @@ return (
         <input type="checkbox" value={formValues.cheese} name="cheese"onChange={onChange}/>
         </label>
         <label>Submit:
-        <button type="submit" value="Submit Pizza Order!" onChange={onChange}></button> 
+        <button id="order-button" type="submit" value="Submit Pizza Order!" onSubmit={formSubmit}></button> 
         </label>
         </form>
     </div>
